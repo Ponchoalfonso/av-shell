@@ -5,11 +5,10 @@ import Quickshell
 import qs.lib
 import qs.modules
 
-PopupWindow {
+Item {
   id: root
   implicitWidth: layout.implicitWidth
   implicitHeight: layout.implicitHeight
-  color: "transparent"
   visible: true
 
   property real minHeight: 40
@@ -40,7 +39,7 @@ PopupWindow {
 
       RectangularShadow {
         anchors.fill: parent
-        radius: container.radius
+        radius: tab.radius
         color: Qt.lighter(parent.color, 1.6)
       }
 

@@ -8,6 +8,7 @@ import qs.config
 import qs.modules
 
 Scope {
+  id: root
   Variants {
     model: Quickshell.screens
 
@@ -26,15 +27,6 @@ Scope {
         top: true
         left: true
         right: true
-      }
-
-      // Popups
-      ControlDrawer {
-        anchor.window: topLevel
-        anchor.rect.x: anchor.window.width / 2 - width / 2
-        anchor.rect.y: 0
-        drawerColor: topLevel.mainColor
-        minHeight: topLevel.barHeight
       }
 
       FlexboxLayout {
@@ -70,6 +62,11 @@ Scope {
               icon.width: 20
             }
           }
+        }
+
+        ControlDrawer {
+          drawerColor: topLevel.mainColor
+          minHeight: topLevel.barHeight
         }
 
         FlexboxLayout {
