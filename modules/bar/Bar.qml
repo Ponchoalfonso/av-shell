@@ -18,7 +18,7 @@ Scope {
         right: true
       }
 
-      implicitHeight: 30
+      implicitHeight: 40
 
       // Popups
       ControlDrawer {
