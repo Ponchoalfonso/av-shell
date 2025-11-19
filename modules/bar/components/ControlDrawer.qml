@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import qs.lib
@@ -18,16 +19,9 @@ PopupWindow {
     id: layout
     property real buttonPadding: 5
 
-    Item {
+    StyledContainer {
       implicitWidth: root.minHeight
       implicitHeight: root.minHeight
-
-      Rectangle {
-        anchors.fill: parent
-        anchors.margins: 4
-        color: root.drawerColor
-        radius: 14
-      }
 
       Frame {
         anchors.fill: parent
@@ -37,11 +31,18 @@ PopupWindow {
     }
 
     Rectangle {
+      id: tab
       implicitHeight: root.minHeight
       implicitWidth: 230
       color: root.drawerColor
       bottomLeftRadius: 20
       bottomRightRadius: 20
+
+      RectangularShadow {
+        anchors.fill: parent
+        radius: container.radius
+        color: Qt.lighter(parent.color, 1.6)
+      }
 
       Text {
         anchors.centerIn: parent
@@ -50,16 +51,10 @@ PopupWindow {
         text: SystemInfo.username + "@" + SystemInfo.hostname
       }
     }
-    Item {
+
+    StyledContainer {
       implicitWidth: root.minHeight
       implicitHeight: root.minHeight
-
-      Rectangle {
-        anchors.fill: parent
-        anchors.margins: 4
-        color: root.drawerColor
-        radius: 14
-      }
 
       Frame {
         anchors.fill: parent
