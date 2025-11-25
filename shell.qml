@@ -1,6 +1,8 @@
 import Quickshell
 import "modules/bar"
+import "modules/background"
 
-Scope {
+ShellRoot {
+  ScreenCorners {}
   Bar {}
 }

@@ -4,6 +4,8 @@ import QtQuick.Controls
 import QtQuick.Effects
 import Quickshell
 import "components"
+import qs.lib.containers
+import qs.lib
 import qs.config
 import qs.modules
 
@@ -15,8 +17,7 @@ Scope {
     PanelWindow {
       id: topLevel
 
-      required property var modelData
-      property color mainColor: "black"
+      required property ShellScreen modelData
       property real barHeight: 40
 
       implicitHeight: barHeight
@@ -48,7 +49,6 @@ Scope {
             id: osIcon
             implicitWidth: topLevel.height
             implicitHeight: topLevel.height
-            color: topLevel.mainColor
 
             Button {
               anchors.fill: osIcon.container
@@ -57,15 +57,19 @@ Scope {
                 color: "transparent"
               }
               icon.source: Config.osIconPath
-              icon.color: "white"
+              icon.color: Theme.accentColor
               icon.height: 20
               icon.width: 20
             }
           }
+
+          Workspaces {
+            implicitHeight: topLevel.height
+            screen: topLevel.modelData
+          }
         }
 
         ControlDrawer {
-          drawerColor: topLevel.mainColor
           minHeight: topLevel.barHeight
         }
 
@@ -81,39 +85,37 @@ Scope {
 
           StyledContainer {
             id: clock
-            implicitWidth: 60
+            implicitWidth: time.width + 10 * 2
             implicitHeight: topLevel.height
-            color: topLevel.mainColor
 
-            Text {
+            StyledText {
               id: time
               anchors.centerIn: clock.container
-              color: "white"
               font.bold: true
               text: SystemInfo.time
             }
           }
 
-          StyledContainer {
-            id: power
-            implicitWidth: topLevel.height
-            implicitHeight: topLevel.height
-            color: topLevel.mainColor
-
-            Button {
-              anchors.fill: power.container
-              background: Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-              }
-              Text {
-                anchors.centerIn: parent
-                color: "white"
-                font.family: Fonts.tablerIcons
-                text: "\ueb0d"
-              }
-            }
-          }
+          // StyledContainer {
+          //   id: power
+          //   implicitWidth: topLevel.height
+          //   implicitHeight: topLevel.height
+          //
+          //   Button {
+          //     anchors.fill: power.container
+          //     background: Rectangle {
+          //       anchors.fill: parent
+          //       color: "transparent"
+          //     }
+          //     StyledText {
+          //       anchors.centerIn: parent
+          //       color: Theme.accentColor
+          //       font.family: Fonts.tablerIcons.font.family
+          //       font.pointSize: 14
+          //       text: "\ueb0d"
+          //     }
+          //   }
+          // }
         }
       }
     }

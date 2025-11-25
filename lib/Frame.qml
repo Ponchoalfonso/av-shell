@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.lib.effects
+import qs.config
 
 Item {
   id: root
@@ -12,7 +13,7 @@ Item {
   property alias bottomLeftRadius: maskFrame.bottomLeftRadius
   property alias bottomRightRadius: maskFrame.bottomRightRadius
   property alias radius: maskFrame.radius
-  property color color: "black"
+  property color color: Theme.primaryColor
 
   Rectangle {
     id: frame

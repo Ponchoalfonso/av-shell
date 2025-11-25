@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
-import Quickshell
 import qs.lib
+import qs.lib.containers
 import qs.modules
 
 Item {
@@ -12,40 +12,43 @@ Item {
   visible: true
 
   property real minHeight: 40
-  property color drawerColor: "black"
+  property real buttonPadding: 4
 
   FlexboxLayout {
     id: layout
-    property real buttonPadding: 5
 
     StyledContainer {
       implicitWidth: root.minHeight
       implicitHeight: root.minHeight
+      margins: root.buttonPadding
 
       Frame {
         anchors.fill: parent
         topRightRadius: 15
-        color: root.drawerColor
       }
     }
 
-    Rectangle {
-      id: tab
+    Item {
       implicitHeight: root.minHeight
       implicitWidth: 230
-      color: root.drawerColor
-      bottomLeftRadius: 20
-      bottomRightRadius: 20
 
       RectangularShadow {
-        anchors.fill: parent
+        anchors.fill: tab
         radius: tab.radius
-        color: Qt.lighter(parent.color, 1.6)
+        color: "black"
+        spread: -5
+        blur: 3
       }
 
-      Text {
-        anchors.centerIn: parent
-        color: "white"
+      StyledRectangle {
+        id: tab
+        anchors.fill: parent
+        bottomLeftRadius: 20
+        bottomRightRadius: 20
+      }
+
+      StyledText {
+        anchors.centerIn: tab
         font.bold: true
         text: SystemInfo.username + "@" + SystemInfo.hostname
       }
@@ -54,11 +57,11 @@ Item {
     StyledContainer {
       implicitWidth: root.minHeight
       implicitHeight: root.minHeight
+      margins: root.buttonPadding
 
       Frame {
         anchors.fill: parent
         topLeftRadius: 15
-        color: root.drawerColor
       }
     }
   }
