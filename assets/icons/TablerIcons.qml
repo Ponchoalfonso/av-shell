@@ -1,20 +1,17 @@
 pragma Singleton
 
+import QtQuick
 import Quickshell
 
 Singleton {
   id: root
 
-  readonly property var nameIconMap: {
-    const map = new Map();
-    map.set('volume-off', '\uf1c3');
-    map.set('volume', '\ueb51');
-    map.set('volume-2', '\ueb4f');
-    map.set('volume-3', '\ueb50');
-    return map;
+  readonly property FontLoader tablerIconsFont: FontLoader {
+    source: Qt.resolvedUrl(`${Quickshell.shellDir}/assets/fonts/tabler-icons.ttf`)
   }
 
-  function resolveName(name) {
-    return this.nameIconMap.get(name) || '';
-  }
+  readonly property string volume: '\ueb51'
+  readonly property string volumeOff: '\uf1c3'
+  readonly property string volume2: '\ueb4f'
+  readonly property string volume3: '\ueb50'
 }

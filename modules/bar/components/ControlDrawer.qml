@@ -57,7 +57,6 @@ PanelWindow {
 
       StyledText {
         anchors.centerIn: tab
-        font.bold: true
         text: SystemInfo.username + "@" + SystemInfo.hostname
       }
     }

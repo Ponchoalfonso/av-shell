@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell.Services.Pipewire
 import qs.assets.icons
-import qs.config
 import qs.lib
 import qs.lib.containers
 
@@ -16,15 +15,15 @@ StyledContainer {
   }
 
   function resolveIcon() {
-    if (!Pipewire.ready || Pipewire.defaultAudioSink.audio.muted)
-      return TablerIcons.resolveName('volume-off');
+    if (!Pipewire.ready)
+      return TablerIcons.volumeOff;
+    if (Pipewire.defaultAudioSink.audio.volume == 0 || Pipewire.defaultAudioSink.audio.muted)
+      return TablerIcons.volume3;
     if (Pipewire.defaultAudioSink.audio.volume > 0.5)
-      return TablerIcons.resolveName('volume');
+      return TablerIcons.volume;
     if (Pipewire.defaultAudioSink.audio.volume > 0)
-      return TablerIcons.resolveName('volume-2');
-    if (Pipewire.defaultAudioSink.audio.volume == 0)
-      return TablerIcons.resolveName('volume-3');
-    return TablerIcons.resolveName('volume-off');
+      return TablerIcons.volume2;
+    return TablerIcons.volume;
   }
 
   Button {
@@ -42,10 +41,8 @@ StyledContainer {
 
       StyledText {
         id: volumeIcon
-        anchors.topMargin: 3
-        font.family: Fonts.tablerIcons.font.family
+        font.family: TablerIcons.tablerIconsFont.font.family
         font.pointSize: 12
-        font.bold: true
         text: audio.resolveIcon()
       }
 
