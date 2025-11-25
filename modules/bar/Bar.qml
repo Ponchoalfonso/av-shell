@@ -83,17 +83,12 @@ Scope {
             }
           }
 
-          StyledContainer {
-            id: clock
-            implicitWidth: time.width + 10 * 2
+          Audio {
             implicitHeight: topLevel.height
+          }
 
-            StyledText {
-              id: time
-              anchors.centerIn: clock.container
-              font.bold: true
-              text: SystemInfo.time
-            }
+          Clock {
+            implicitHeight: topLevel.height
           }
 
           // StyledContainer {

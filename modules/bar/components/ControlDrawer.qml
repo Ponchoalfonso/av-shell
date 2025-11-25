@@ -1,18 +1,26 @@
 import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
+import Quickshell
+import Quickshell.Wayland
 import qs.lib
 import qs.lib.containers
 import qs.modules
 
-Item {
+PanelWindow {
   id: root
-  implicitWidth: layout.implicitWidth
-  implicitHeight: layout.implicitHeight
-  visible: true
 
   property real minHeight: 40
   property real buttonPadding: 4
+
+  implicitWidth: layout.implicitWidth
+  implicitHeight: layout.implicitHeight
+  color: "transparent"
+
+  WlrLayershell.exclusionMode: ExclusionMode.Ignore
+  WlrLayershell.layer: WlrLayer.Top
+
+  anchors.top: true
 
   FlexboxLayout {
     id: layout
