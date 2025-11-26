@@ -3,6 +3,7 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import qs.config
 import qs.lib
 import qs.lib.containers
@@ -23,21 +24,18 @@ PanelWindow {
   color: "transparent"
 
   property string currentView: ""
+  property bool isDrawerOpen: currentView != "" || anim.running
 
   WlrLayershell.exclusionMode: ExclusionMode.Ignore
-  WlrLayershell.layer: currentView != "" || anim.running ? WlrLayer.Overlay : WlrLayer.Bottom
+  WlrLayershell.layer: isDrawerOpen ? WlrLayer.Overlay : WlrLayer.Bottom
 
   Connections {
     target: Shortcuts.toggleControlDrawer
     function onReleased() {
-      if (root.currentView !== "") {
-        root.currentView = "";
-        drawer.implicitWidth = root.minWidth;
-        drawer.implicitHeight = root.minHeight;
-      } else {
+      if (root.currentView == "" && screen.name == Hyprland.focusedMonitor.name) {
         root.currentView = "menu";
-        drawer.implicitWidth = 400;
-        drawer.implicitHeight = 100;
+      } else {
+        root.currentView = "";
       }
     }
   }
@@ -97,9 +95,39 @@ PanelWindow {
         }
       }
 
-      StyledText {
-        anchors.centerIn: drawer
-        text: SystemInfo.username + "@" + SystemInfo.hostname
+      Loader {
+        id: defaultView
+        opacity: !root.isDrawerOpen ? 1 : 0
+        visible: opacity > 0
+        x: !root.isDrawerOpen ? (parent.width - width) / 2 : 0
+        y: (root.minHeight - height) / 2
+        sourceComponent: {
+          // Future idea: Add configurable default drawer view
+          switch (true) {
+          default:
+            systemInfo;
+          }
+        }
+
+        Behavior on opacity {
+          NumberAnimation {
+            duration: 150
+          }
+        }
+
+        Behavior on x {
+          NumberAnimation {
+            duration: 150
+            easing.type: Easing.OutQuad
+          }
+        }
+      }
+
+      Component {
+        id: systemInfo
+        StyledText {
+          text: SystemInfo.username + "@" + SystemInfo.hostname
+        }
       }
 
       Behavior on implicitHeight {
