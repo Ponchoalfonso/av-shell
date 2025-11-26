@@ -3,6 +3,7 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import qs.config
 import qs.lib
 import qs.lib.containers
 import qs.modules
@@ -11,19 +12,39 @@ PanelWindow {
   id: root
 
   property real minHeight: 40
+  property real minWidth: 230
+  property real maxWidth: 800
+  property real maxHeight: 800
   property real buttonPadding: 4
 
-  implicitWidth: layout.implicitWidth
-  implicitHeight: layout.implicitHeight
+  anchors.top: true
+  implicitWidth: maxWidth
+  implicitHeight: maxHeight
   color: "transparent"
 
-  WlrLayershell.exclusionMode: ExclusionMode.Ignore
-  WlrLayershell.layer: WlrLayer.Top
+  property string currentView: ""
 
-  anchors.top: true
+  WlrLayershell.exclusionMode: ExclusionMode.Ignore
+  WlrLayershell.layer: currentView != "" || anim.running ? WlrLayer.Overlay : WlrLayer.Bottom
+
+  Connections {
+    target: Shortcuts.toggleControlDrawer
+    function onReleased() {
+      if (root.currentView !== "") {
+        root.currentView = "";
+        drawer.implicitWidth = root.minWidth;
+        drawer.implicitHeight = root.minHeight;
+      } else {
+        root.currentView = "menu";
+        drawer.implicitWidth = 400;
+        drawer.implicitHeight = 100;
+      }
+    }
+  }
 
   FlexboxLayout {
     id: layout
+    anchors.horizontalCenter: parent.horizontalCenter
 
     StyledContainer {
       implicitWidth: root.minHeight
@@ -37,14 +58,14 @@ PanelWindow {
     }
 
     Item {
-      implicitHeight: root.minHeight
-      implicitWidth: 230
+      id: drawer
+      implicitHeight: viewLoader.item ? Math.max(root.minHeight, viewLoader.height) : root.minHeight
+      implicitWidth: viewLoader.item ? Math.max(230, viewLoader.width) : 230
 
       RectangularShadow {
-        anchors.fill: tab
-        radius: tab.radius
+        anchors.fill: drawer
+        radius: 20
         color: "black"
-        spread: -5
         blur: 3
       }
 
@@ -55,9 +76,45 @@ PanelWindow {
         bottomRightRadius: 20
       }
 
+      Loader {
+        id: viewLoader
+        anchors.centerIn: drawer
+        sourceComponent: {
+          switch (root.currentView) {
+          case "menu":
+            return menu;
+          default:
+            return null;
+          }
+        }
+      }
+
+      Component {
+        id: menu
+        Item {
+          width: 400
+          height: 100
+        }
+      }
+
       StyledText {
-        anchors.centerIn: tab
+        anchors.centerIn: drawer
         text: SystemInfo.username + "@" + SystemInfo.hostname
+      }
+
+      Behavior on implicitHeight {
+        NumberAnimation {
+          id: anim
+          duration: 150
+          easing.type: Easing.InOutQuad
+        }
+      }
+
+      Behavior on implicitWidth {
+        NumberAnimation {
+          duration: 150
+          easing.type: Easing.InOutQuad
+        }
       }
     }
 

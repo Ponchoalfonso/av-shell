@@ -1,13 +1,10 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Effects
 import Quickshell
 import "components"
 import qs.lib.containers
-import qs.lib
 import qs.config
-import qs.modules
 
 Scope {
   id: root
@@ -70,6 +67,7 @@ Scope {
         }
 
         ControlDrawer {
+          screen: topLevel.modelData
           minHeight: topLevel.barHeight
         }
 
@@ -90,27 +88,6 @@ Scope {
           Clock {
             implicitHeight: topLevel.height
           }
-
-          // StyledContainer {
-          //   id: power
-          //   implicitWidth: topLevel.height
-          //   implicitHeight: topLevel.height
-          //
-          //   Button {
-          //     anchors.fill: power.container
-          //     background: Rectangle {
-          //       anchors.fill: parent
-          //       color: "transparent"
-          //     }
-          //     StyledText {
-          //       anchors.centerIn: parent
-          //       color: Theme.accentColor
-          //       font.family: Fonts.tablerIcons.font.family
-          //       font.pointSize: 14
-          //       text: "\ueb0d"
-          //     }
-          //   }
-          // }
         }
       }
     }
